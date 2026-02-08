@@ -1,5 +1,6 @@
 "use client";
 
+import { lazy } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -13,14 +14,50 @@ import {
   CardSkeleton,
   ChartSkeleton,
   ListSkeleton,
-  StatsCard,
-  RevenueChart,
-  GrowthProgress,
-  OrderStatistics,
-  ProfileReport,
-  IncomeExpenses,
-  TransactionsList,
 } from "@/components/dashboard";
+
+// Lazy load widgets for code splitting
+const StatsCard = lazy(() =>
+  import("@/components/dashboard/widgets/StatsCard").then((mod) => ({
+    default: mod.StatsCard,
+  }))
+);
+
+const RevenueChart = lazy(() =>
+  import("@/components/dashboard/widgets/RevenueChart").then((mod) => ({
+    default: mod.RevenueChart,
+  }))
+);
+
+const GrowthProgress = lazy(() =>
+  import("@/components/dashboard/widgets/GrowthProgress").then((mod) => ({
+    default: mod.GrowthProgress,
+  }))
+);
+
+const OrderStatistics = lazy(() =>
+  import("@/components/dashboard/widgets/OrderStatistics").then((mod) => ({
+    default: mod.OrderStatistics,
+  }))
+);
+
+const ProfileReport = lazy(() =>
+  import("@/components/dashboard/widgets/ProfileReport").then((mod) => ({
+    default: mod.ProfileReport,
+  }))
+);
+
+const IncomeExpenses = lazy(() =>
+  import("@/components/dashboard/widgets/IncomeExpenses").then((mod) => ({
+    default: mod.IncomeExpenses,
+  }))
+);
+
+const TransactionsList = lazy(() =>
+  import("@/components/dashboard/widgets/TransactionsList").then((mod) => ({
+    default: mod.TransactionsList,
+  }))
+);
 
 // Mock API functions that would normally call your backend
 const fetchProfitStats = async () => {
