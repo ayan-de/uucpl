@@ -51,39 +51,6 @@ export function Header({
           <MenuIcon sx={{ fontSize: 20 }} />
         </IconButton>
 
-        {/* Search Bar */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            bgcolor: isDark ? "background.default" : "#f8fafc",
-            borderRadius: 1,
-            px: 1.5,
-            py: 0.5,
-            minWidth: 220,
-            border: 1,
-            borderColor: "divider",
-            transition: "border-color 0.2s",
-            "&:focus-within": {
-              borderColor: "primary.main",
-            },
-          }}
-        >
-          <SearchIcon sx={{ color: "text.secondary", fontSize: 16, mr: 1 }} />
-          <InputBase
-            placeholder="Quick search..."
-            sx={{
-              flex: 1,
-              fontSize: 12,
-              color: "text.primary",
-              "& ::placeholder": {
-                color: "text.secondary",
-                opacity: 1,
-              },
-            }}
-          />
-        </Box>
-
         <Box sx={{ flex: 1 }} />
 
         {/* Right Section */}
