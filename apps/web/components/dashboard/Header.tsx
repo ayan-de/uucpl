@@ -14,14 +14,18 @@ import SearchIcon from "@mui/icons-material/Search";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { ThemeToggle } from "./ThemeToggle";
 
+import MenuIcon from "@mui/icons-material/Menu";
+
 interface HeaderProps {
   userName?: string;
   userRole?: string;
+  onMenuClick?: () => void;
 }
 
 export function Header({
   userName = "Admin",
   userRole = "Owner",
+  onMenuClick,
 }: HeaderProps) {
   const muiTheme = useMuiTheme();
   const isDark = muiTheme.palette.mode === "dark";
@@ -37,6 +41,16 @@ export function Header({
       }}
     >
       <Toolbar sx={{ px: 2, minHeight: 48, height: 48 }}>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="start"
+          onClick={onMenuClick}
+          sx={{ mr: 2, display: { md: "none" }, color: "text.primary" }}
+        >
+          <MenuIcon sx={{ fontSize: 20 }} />
+        </IconButton>
+
         {/* Search Bar */}
         <Box
           sx={{

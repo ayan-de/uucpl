@@ -22,9 +22,13 @@ import HomeIcon from "@mui/icons-material/Home";
 // import SmartToyIcon from "@mui/icons-material/SmartToy";
 // import SettingsIcon from "@mui/icons-material/Settings";
 // import TuneIcon from "@mui/icons-material/Tune";
-// import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 // import InventoryIcon from "@mui/icons-material/Inventory";
+
+import { useTheme as useMuiTheme, useMediaQuery } from "@mui/material";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import IconButton from "@mui/material/IconButton";
 
 const DRAWER_WIDTH = 240;
 
@@ -43,78 +47,17 @@ const navigationData: NavItem[] = [
     icon: <HomeIcon sx={{ fontSize: 18 }} />,
     href: "/admin",
   },
-  // {
-  //   id: "sales",
-  //   label: "Sales",
-  //   icon: <ShoppingCartIcon sx={{ fontSize: 18 }} />,
-  //   children: [
-  //     { id: "sales-orders", label: "Orders", href: "/admin/sales/orders" },
-  //     { id: "sales-invoices", label: "Invoices", href: "/admin/sales/invoices" },
-  //     { id: "sales-customers", label: "Customers", href: "/admin/sales/customers" },
-  //   ],
-  // },
-  // {
-  //   id: "purchase",
-  //   label: "Purchase",
-  //   icon: <LocalShippingIcon sx={{ fontSize: 18 }} />,
-  //   children: [
-  //     { id: "purchase-orders", label: "Orders", href: "/admin/purchase/orders" },
-  //     { id: "purchase-vendors", label: "Vendors", href: "/admin/purchase/vendors" },
-  //   ],
-  // },
-  // {
-  //   id: "inventory",
-  //   label: "Inventory",
-  //   icon: <InventoryIcon sx={{ fontSize: 18 }} />,
-  //   children: [
-  //     { id: "inventory-items", label: "Items", href: "/admin/inventory/items" },
-  //     { id: "inventory-stock", label: "Stock", href: "/admin/inventory/stock" },
-  //   ],
-  // },
-  // {
-  //   id: "reports",
-  //   label: "Reports",
-  //   icon: <AssessmentIcon sx={{ fontSize: 18 }} />,
-  //   href: "/admin/reports",
-  // },
-  // {
-  //   id: "gst-module",
-  //   label: "GST Module",
-  //   icon: <ReceiptIcon sx={{ fontSize: 18 }} />,
-  //   href: "/admin/gst",
-  // },
-  // {
-  //   id: "payments",
-  //   label: "Payments",
-  //   icon: <PaymentsIcon sx={{ fontSize: 18 }} />,
-  //   href: "/admin/payments",
-  // },
-  // {
-  //   id: "chatbot",
-  //   label: "Chatbot",
-  //   icon: <SmartToyIcon sx={{ fontSize: 18 }} />,
-  //   href: "/admin/chatbot",
-  // },
-  // {
-  //   id: "configuration",
-  //   label: "Configuration",
-  //   icon: <TuneIcon sx={{ fontSize: 18 }} />,
-  //   children: [
-  //     { id: "config-general", label: "General", href: "/admin/config/general" },
-  //     { id: "config-tax", label: "Tax Settings", href: "/admin/config/tax" },
-  //     { id: "config-email", label: "Email", href: "/admin/config/email" },
-  //   ],
-  // },
-  // {
-  //   id: "settings",
-  //   label: "Settings",
-  //   icon: <SettingsIcon sx={{ fontSize: 18 }} />,
-  //   href: "/admin/settings",
-  // },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  open?: boolean;
+  onClose?: () => void;
+}
+
+export function Sidebar({ open = false, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const theme = useMuiTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
 
   const toggleExpand = (id: string) => {
@@ -131,56 +74,48 @@ export function Sidebar() {
     return false;
   };
 
-  return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: DRAWER_WIDTH,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: DRAWER_WIDTH,
-          boxSizing: "border-box",
-          bgcolor: "#0f172a",
-          borderRight: "1px solid #1e293b",
-          borderRadius: 0,
-          display: "flex",
-          flexDirection: "column",
-        },
-      }}
-    >
+  const drawerContent = (
+    <>
       {/* Logo Section */}
       <Box
         sx={{
           p: 2,
           display: "flex",
           alignItems: "center",
-          gap: 1.5,
+          justifyContent: "space-between",
           borderBottom: "1px solid #1e293b",
         }}
       >
-        <Box
-          sx={{
-            width: 32,
-            height: 32,
-            borderRadius: 1,
-            bgcolor: "#3b82f6",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <AccountBalanceIcon sx={{ color: "white", fontSize: 18 }} />
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          <Box
+            sx={{
+              width: 32,
+              height: 32,
+              borderRadius: 1,
+              bgcolor: "#3b82f6",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <AccountBalanceIcon sx={{ color: "white", fontSize: 18 }} />
+          </Box>
+          <Typography
+            sx={{
+              fontWeight: 700,
+              color: "white",
+              fontSize: 14,
+              letterSpacing: "0.5px",
+            }}
+          >
+            UUCPL
+          </Typography>
         </Box>
-        <Typography
-          sx={{
-            fontWeight: 700,
-            color: "white",
-            fontSize: 14,
-            letterSpacing: "0.5px",
-          }}
-        >
-          UUCPL
-        </Typography>
+        {isMobile && (
+          <IconButton onClick={onClose} sx={{ color: "#94a3b8" }}>
+            <MenuOpenIcon />
+          </IconButton>
+        )}
       </Box>
 
       {/* Navigation List */}
@@ -197,13 +132,28 @@ export function Sidebar() {
                   <ListItemButton
                     component={hasChildren ? "div" : Link}
                     href={hasChildren ? undefined : item.href}
-                    onClick={hasChildren ? () => toggleExpand(item.id) : undefined}
+                    onClick={() => {
+                      if (hasChildren) {
+                        toggleExpand(item.id);
+                      } else if (isMobile && onClose) {
+                        onClose();
+                      }
+                    }}
                     sx={{
                       borderRadius: 0,
                       py: 1,
                       px: 2,
                       minHeight: 40,
                       bgcolor: isActive ? "#1e293b" : "transparent",
+                      "&::before": isActive ? {
+                        content: '""',
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        bottom: 0,
+                        width: 3,
+                        bgcolor: '#3b82f6',
+                      } : {},
                       "&:hover": {
                         bgcolor: isActive ? "#1e293b" : "rgba(255,255,255,0.05)",
                       },
@@ -225,7 +175,7 @@ export function Sidebar() {
                         color: isActive ? "#ffffff" : "#94a3b8",
                       }}
                     />
-                    {/* {hasChildren && (
+                    {hasChildren && (
                       <Box
                         sx={{
                           color: "#64748b",
@@ -237,7 +187,7 @@ export function Sidebar() {
                       >
                         <ChevronRightIcon sx={{ fontSize: 16 }} />
                       </Box>
-                    )} */}
+                    )}
                   </ListItemButton>
                 </ListItem>
 
@@ -252,6 +202,11 @@ export function Sidebar() {
                             <ListItemButton
                               component={Link}
                               href={child.href}
+                              onClick={() => {
+                                if (isMobile && onClose) {
+                                  onClose();
+                                }
+                              }}
                               sx={{
                                 borderRadius: 0,
                                 py: 0.75,
@@ -341,6 +296,51 @@ export function Sidebar() {
           </Box>
         </Box>
       </Box>
-    </Drawer>
+    </>
+  );
+
+  return (
+    <Box
+      component="nav"
+      sx={{ width: { md: DRAWER_WIDTH }, flexShrink: { md: 0 } }}
+    >
+      {/* Mobile drawer */}
+      <Drawer
+        variant="temporary"
+        open={open}
+        onClose={onClose}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+        sx={{
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": {
+            width: DRAWER_WIDTH,
+            boxSizing: "border-box",
+            bgcolor: "#0f172a",
+            borderRight: "1px solid #1e293b",
+          },
+        }}
+      >
+        {drawerContent}
+      </Drawer>
+
+      {/* Desktop drawer */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: "none", md: "block" },
+          "& .MuiDrawer-paper": {
+            width: DRAWER_WIDTH,
+            boxSizing: "border-box",
+            bgcolor: "#0f172a",
+            borderRight: "1px solid #1e293b",
+          },
+        }}
+        open
+      >
+        {drawerContent}
+      </Drawer>
+    </Box>
   );
 }
