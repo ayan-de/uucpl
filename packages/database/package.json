@@ -20,14 +20,21 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
+    "db:seed": "tsx prisma/seed.ts",
     "check-types": "tsc --noEmit"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
-    "@prisma/client": "^6.8.2"
+    "@prisma/client": "^6.8.2",
+    "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
+    "@types/bcryptjs": "^2.4.6",
     "prisma": "^6.8.2",
+    "tsx": "^4.7.0",
     "typescript": "5.9.2"
   }
 }

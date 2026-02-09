@@ -11,6 +11,86 @@ datasource db {
 }
 
 // ============================================
+// USER ROLES
+// ============================================
+enum UserRole {
+  ADMIN
+  CLIENT
+}
+
+// ============================================
+// USERS (For NextAuth Authentication)
+// ============================================
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String    // Hashed password for credentials auth
+  role          UserRole  @default(CLIENT)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  client   Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  clientId String? @unique // Links to Client for CLIENT role users
+  accounts Account[]
+  sessions Session[]
+
+  @@map("users")
+}
+
+// ============================================
+// NEXTAUTH ACCOUNT (OAuth providers)
+// ============================================
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+// ============================================
+// NEXTAUTH SESSION
+// ============================================
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// ============================================
+// NEXTAUTH VERIFICATION TOKEN
+// ============================================
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ============================================
 // CLIENTS (Law Firm's Clients)
 // ============================================
 model Client {
@@ -25,6 +105,7 @@ model Client {
   // Relations
   borrowers Borrower[]
   templates Template[]
+  user      User?      // Linked user account for login
 
   @@map("clients")
 }
