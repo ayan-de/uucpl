@@ -18,36 +18,36 @@ export function ListSkeleton({
 }: ListSkeletonProps) {
   return (
     <Card sx={{ height: "100%", bgcolor: "background.paper" }}>
-      <CardContent>
+      <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
         {/* Header */}
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            mb: 2,
+            mb: 1.5,
           }}
         >
           <Box>
             <Skeleton
               variant="text"
               width={140}
-              height={24}
+              height={22}
               animation="wave"
               sx={{ bgcolor: "action.hover" }}
             />
             <Skeleton
               variant="text"
               width={100}
-              height={16}
+              height={14}
               animation="wave"
               sx={{ bgcolor: "action.hover" }}
             />
           </Box>
           <Skeleton
             variant="circular"
-            width={24}
-            height={24}
+            width={20}
+            height={20}
             animation="wave"
             sx={{ bgcolor: "action.hover" }}
           />
@@ -60,7 +60,7 @@ export function ListSkeleton({
             sx={{
               display: "flex",
               alignItems: "center",
-              py: 1.5,
+              py: 0.75,
               borderBottom: index < items - 1 ? 1 : 0,
               borderColor: "divider",
             }}
@@ -68,10 +68,10 @@ export function ListSkeleton({
             {showAvatar && (
               <Skeleton
                 variant="circular"
-                width={44}
-                height={44}
+                width={28}
+                height={28}
                 animation="wave"
-                sx={{ mr: 2, bgcolor: "action.hover" }}
+                sx={{ mr: 1, bgcolor: "action.hover" }}
               />
             )}
             <Box sx={{ flex: 1 }}>

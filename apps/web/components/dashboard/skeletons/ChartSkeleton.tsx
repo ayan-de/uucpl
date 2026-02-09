@@ -17,7 +17,7 @@ export function ChartSkeleton({
 }: ChartSkeletonProps) {
   return (
     <Card sx={{ height: "100%", bgcolor: "background.paper" }}>
-      <CardContent>
+      <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
         {/* Header */}
         {showHeader && (
           <Box
@@ -25,7 +25,7 @@ export function ChartSkeleton({
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              mb: 3,
+              mb: 2,
             }}
           >
             <Skeleton

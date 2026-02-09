@@ -17,37 +17,37 @@ export function CardSkeleton({
 }: CardSkeletonProps) {
   return (
     <Card sx={{ height: "100%", bgcolor: "background.paper" }}>
-      <CardContent>
+      <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
         <Box
           sx={{
             display: "flex",
             alignItems: "flex-start",
             justifyContent: "space-between",
-            mb: 2,
+            mb: 1.5,
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             {showIcon && (
               <Skeleton
                 variant="rounded"
-                width={44}
-                height={44}
+                width={36}
+                height={36}
                 animation="wave"
-                sx={{ bgcolor: "action.hover" }}
+                sx={{ bgcolor: "action.hover", borderRadius: 1.5 }}
               />
             )}
             <Skeleton
               variant="text"
               width={60}
-              height={20}
+              height={18}
               animation="wave"
               sx={{ bgcolor: "action.hover" }}
             />
           </Box>
           <Skeleton
             variant="circular"
-            width={24}
-            height={24}
+            width={20}
+            height={20}
             animation="wave"
             sx={{ bgcolor: "action.hover" }}
           />
@@ -55,23 +55,23 @@ export function CardSkeleton({
         <Skeleton
           variant="text"
           width={100}
-          height={36}
+          height={32}
           animation="wave"
-          sx={{ mb: 1, bgcolor: "action.hover" }}
+          sx={{ mb: 0.5, bgcolor: "action.hover" }}
         />
         {showTrend && (
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
             <Skeleton
               variant="text"
-              width={50}
-              height={20}
+              width={40}
+              height={16}
               animation="wave"
               sx={{ bgcolor: "action.hover" }}
             />
             <Skeleton
               variant="text"
-              width={80}
-              height={16}
+              width={60}
+              height={14}
               animation="wave"
               sx={{ bgcolor: "action.hover" }}
             />

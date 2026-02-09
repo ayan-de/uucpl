@@ -18,7 +18,7 @@ export function TableSkeleton({
 }: TableSkeletonProps) {
   return (
     <Card sx={{ height: "100%" }}>
-      <CardContent>
+      <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
         {/* Table Header */}
         {showHeader && (
           <Box
@@ -26,7 +26,7 @@ export function TableSkeleton({
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              mb: 3,
+              mb: 2,
             }}
           >
             <Skeleton variant="text" width={140} height={28} animation="wave" />
