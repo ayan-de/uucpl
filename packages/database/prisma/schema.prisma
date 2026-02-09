@@ -32,6 +32,10 @@ model User {
   isActive      Boolean   @default(true)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  
+  // Login tracking
+  lastLoginAt   DateTime?
+  lastLoginIp   String?
 
   // Relations
   client   Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
@@ -66,13 +70,24 @@ model Account {
 }
 
 // ============================================
-// NEXTAUTH SESSION
+// NEXTAUTH SESSION (Enhanced with device tracking)
 // ============================================
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  
+  // Device & Security tracking
+  ipAddress    String?  // IP address when session was created
+  userAgent    String?  @db.Text // Browser/device user agent string
+  deviceType   String?  // 'desktop', 'mobile', 'tablet'
+  browser      String?  // 'Chrome', 'Firefox', 'Safari', etc.
+  os           String?  // 'Windows', 'macOS', 'iOS', 'Android', etc.
+  location     String?  // City, Country (from IP geolocation)
+  createdAt    DateTime @default(now())
+  lastActiveAt DateTime @default(now())
+  
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
