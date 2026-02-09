@@ -41,10 +41,45 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       }
 
       return (
-        <div className="flex flex-col items-center justify-center h-full min-h-[200px] p-6 bg-red-50 rounded-xl border border-red-100">
-          <div className="w-12 h-12 mb-4 rounded-full bg-red-100 flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center h-full min-h-[200px] p-8 rounded-2xl border border-red-200/50 bg-gradient-to-br from-red-50 via-white to-orange-50 shadow-lg backdrop-blur-sm">
+          {/* Animated warning icon */}
+          <div className="relative mb-5">
+            <div className="absolute inset-0 w-16 h-16 rounded-full bg-red-400/20 animate-ping" />
+            <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center shadow-lg shadow-red-500/30">
+              <svg
+                className="w-8 h-8 text-white drop-shadow-md"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Error heading */}
+          <h3 className="text-base font-bold text-gray-800 mb-2 tracking-tight">
+            Oops! Something went wrong
+          </h3>
+
+          {/* Error message */}
+          <p className="text-sm text-gray-500 mb-6 text-center max-w-xs leading-relaxed">
+            {this.state.error?.message || "An unexpected error occurred"}
+          </p>
+
+          {/* Try Again button with refresh icon */}
+          <button
+            onClick={this.handleRetry}
+            className="group relative inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-red-500 via-red-600 to-orange-500 rounded-xl shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/40 hover:scale-105 active:scale-95 transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          >
+            {/* Refresh icon */}
             <svg
-              className="w-6 h-6 text-red-500"
+              className="w-4 h-4 transition-transform duration-500 group-hover:rotate-180"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -52,22 +87,16 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                strokeWidth={2.5}
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
               />
             </svg>
-          </div>
-          <h3 className="text-sm font-semibold text-red-800 mb-1">
-            Something went wrong
-          </h3>
-          <p className="text-xs text-red-600 mb-4 text-center">
-            {this.state.error?.message || "An unexpected error occurred"}
-          </p>
-          <button
-            onClick={this.handleRetry}
-            className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-          >
             Try Again
+
+            {/* Shine effect on hover */}
+            <span className="absolute inset-0 rounded-xl overflow-hidden">
+              <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            </span>
           </button>
         </div>
       );
