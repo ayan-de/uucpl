@@ -1,41 +1,9 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
-import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@repo/database";
-
-// Extend the NextAuth types
-declare module "next-auth" {
-    interface Session {
-        user: {
-            id: string;
-            email: string;
-            name: string | null;
-            image: string | null;
-            role: "ADMIN" | "CLIENT";
-            clientId: string | null;
-        };
-    }
-
-    interface User {
-        id: string;
-        email: string;
-        name: string | null;
-        image: string | null;
-        role: "ADMIN" | "CLIENT";
-        clientId: string | null;
-        isActive: boolean;
-    }
-}
-
-declare module "@auth/core/jwt" {
-    interface JWT {
-        id: string;
-        role: "ADMIN" | "CLIENT";
-        clientId: string | null;
-    }
-}
+import { authConfig } from "./auth.config";
 
 // Helper to parse user agent
 function parseUserAgent(userAgent: string | null): {
@@ -69,21 +37,11 @@ function parseUserAgent(userAgent: string | null): {
     return { deviceType, browser, os };
 }
 
-const authConfig: NextAuthConfig = {
-    // Use Prisma adapter for OAuth providers (optional)
-    // Note: Credentials provider uses JWT, not database sessions
+const nextAuth = NextAuth({
+    ...authConfig,
+
+    // PrismaAdapter and providers with heavy deps — only used server-side
     adapter: PrismaAdapter(prisma) as any,
-
-    session: {
-        // IMPORTANT: Credentials provider REQUIRES JWT strategy
-        strategy: "jwt",
-        maxAge: 30 * 24 * 60 * 60, // 30 days
-    },
-
-    pages: {
-        signIn: "/login",
-        error: "/login",
-    },
 
     providers: [
         Credentials({
@@ -170,6 +128,8 @@ const authConfig: NextAuthConfig = {
     ],
 
     callbacks: {
+        ...authConfig.callbacks,
+
         async signIn({ user }) {
             // User must be active
             if ("isActive" in user && !user.isActive) {
@@ -177,48 +137,8 @@ const authConfig: NextAuthConfig = {
             }
             return true;
         },
-
-        async jwt({ token, user }) {
-            // First time jwt callback is called, user object is available
-            if (user) {
-                token.id = user.id;
-                token.role = user.role as "ADMIN" | "CLIENT";
-                token.clientId = user.clientId ?? null;
-            }
-            return token;
-        },
-
-        async session({ session, token }) {
-            // Add custom fields to session from JWT token
-            if (token) {
-                session.user.id = token.id as string;
-                session.user.role = token.role as "ADMIN" | "CLIENT";
-                session.user.clientId = token.clientId as string | null;
-            }
-            return session;
-        },
-
-        async redirect({ url, baseUrl }) {
-            // Handle role-based redirects
-            if (url.startsWith("/")) return `${baseUrl}${url}`;
-            if (new URL(url).origin === baseUrl) return url;
-            return baseUrl;
-        },
     },
-
-    events: {
-        async signIn({ user }) {
-            console.log(`User signed in: ${user.email}`);
-        },
-        async signOut() {
-            console.log("User signed out");
-        },
-    },
-
-    debug: process.env.NODE_ENV === "development",
-};
-
-const nextAuth = NextAuth(authConfig);
+});
 
 export const handlers: typeof nextAuth.handlers = nextAuth.handlers;
 export const signIn: typeof nextAuth.signIn = nextAuth.signIn;
