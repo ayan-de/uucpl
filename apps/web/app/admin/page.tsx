@@ -179,13 +179,13 @@ export default function AdminDashboardPage() {
       </Grid>
 
       {/* Row 4: Transactions List */}
-      <Grid container spacing={2}>
+      {/* <Grid container spacing={2}>
         <Grid size={{ xs: 12, lg: 4 }}>
           <DashboardWidget fallback={<ListSkeleton items={5} />}>
             <TransactionsList />
           </DashboardWidget>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Box>
   );
 }
